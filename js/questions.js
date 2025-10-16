@@ -10,40 +10,74 @@
 // === GERADORES DE QUESTÕES POR TIPO ===
 
 /**
- * Gera uma questão de equação de 1º grau com contexto narrativo
- * Formato: ax + b = c
- * 
- * @param {number} phaseIndex - Índice da fase atual (1-5)
- * @param {number} questionIndex - Índice da questão na fase atual
- * @return {Object} Objeto com a questão, contexto, opções e resposta correta
+ * Returns an English context sentence for a question using NARRATIVAS (config.js)
+ * Falls back to simple templates if NARRATIVAS is not available.
+ */
+function getContext(phaseIndex, questionIndex) {
+    if (typeof NARRATIVAS !== 'undefined' && NARRATIVAS[phaseIndex]) {
+        const arr = NARRATIVAS[phaseIndex];
+        return arr[questionIndex % arr.length] || arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // fallback contexts (English)
+    const FALLBACK = {
+        1: [
+            "An ancient tree whispers a linear riddle you must solve.",
+            "Sprites demand you solve a simple equation to pass."
+        ],
+        2: [
+            "A bridge keeper asks you to interpret a linear function.",
+            "A cartographer shows a straight-line relation to decode."
+        ],
+        3: [
+            "Crystals hum a quadratic pattern; find its roots.",
+            "An underground guardian presents a quadratic challenge."
+        ],
+        4: [
+            "Platforms follow parabolic arcs; compute the peak.",
+            "An inventor needs the vertex of a parabola calculated."
+        ],
+        5: [
+            "The Great Mage mixes puzzles from all realms. Prove your mastery.",
+            "A final blended challenge awaits at the altar."
+        ]
+    };
+
+    const arr = FALLBACK[phaseIndex] || ["A mysterious mathematical challenge appears."];
+    return arr[questionIndex % arr.length];
+}
+
+/**
+ * Gera uma questão de equação de 1º grau com contexto narrativo (EN)
+ * Formato: ax + b = c  (constructed so solution is integer or nicely formatted)
  */
 function generateEq1WithContext(phaseIndex, questionIndex) {
-    // Gera a equação matemática com dificuldade apropriada
-    const difficulty = CONFIG.DIFICULDADE.FACIL;
-    const a = utils.random(1, 10);
-    const b = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
-    const x = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
+    // choose integer solution first, then build equation
+    const x = random(-10, 10);
+    const a = random(1, 10);
+    const b = random(-15, 15);
     const c = a * x + b;
-    
-    // Obtém o contexto narrativo para esta questão
-    const context = NARRATIVAS[phaseIndex][questionIndex % NARRATIVAS[phaseIndex].length];
-    
-    // Cria o texto da questão
-    const questionText = `Resolva a equação: ${a}x + ${b} = ${c}`;
-    
-    // Gera as opções e identifica a resposta correta
-    const correctAnswer = x;
-    const options = utils.generateDistractors(correctAnswer, 3, difficulty.VARIACAO_DISTRATORES);
-    options.push(correctAnswer);
-    utils.shuffleArray(options);
-    const correctAnswerIndex = options.indexOf(correctAnswer);
-    
-    // Retorna o objeto completo da questão
+
+    const context = getContext(phaseIndex, questionIndex);
+
+    const correct = String(x);
+
+    // distractors (nearby values), ensure uniqueness and string form
+    const distractors = new Set();
+    while (distractors.size < 3) {
+        const delta = random(-4, 4);
+        const val = x + delta;
+        if (String(val) !== correct) distractors.add(String(val));
+    }
+
+    const options = shuffleArray([correct, ...Array.from(distractors)]);
+
+    const questionText = `Solve for x: ${a}x + ${b} = ${c}`;
     return {
-        context: context,
-        questionText: questionText,
-        options: options.map(String),
-        correctAnswerIndex: correctAnswerIndex
+        q: questionText,
+        a: correct,
+        opcoes: options,
+        context: context
     };
 }
 
@@ -97,12 +131,8 @@ function generateFunc1WithContext(phaseIndex, questionIndex) {
 }
 
 /**
- * Gera uma questão de equação de 2º grau com contexto narrativo
- * Formato: ax² + bx + c = 0
- * 
- * @param {number} phaseIndex - Índice da fase atual (1-5)
- * @param {number} questionIndex - Índice da questão na fase atual
- * @return {Object} Objeto com a questão, contexto, opções e resposta correta
+ * Gera uma questão de equação de 2º grau com contexto narrativo (EN)
+ * Retorna as opções e a resposta formatadas com point decimal se necessário
  */
 function generateEq2WithContext(phaseIndex, questionIndex) {
     // Generate coefficients ensuring real roots
@@ -122,23 +152,36 @@ function generateEq2WithContext(phaseIndex, questionIndex) {
     if (Math.abs(x1 - x2) < 1e-9) x2 += 1;
 
     const smallest = Math.min(x1, x2);
-    const correct = formatDecimal(smallest, 2);
+
+    // format decimal with utils.formatDecimal if available, otherwise use toFixed
+    const fmt = (num) => {
+        if (typeof utils !== 'undefined' && typeof utils.formatDecimal === 'function') {
+            return utils.formatDecimal(num, 2);
+        }
+        if (Number.isInteger(num)) return String(num);
+        return num.toFixed(2);
+    };
+
+    const correct = fmt(smallest);
 
     // Build distractors near the correct value, formatted with dot
     const distractors = new Set();
     while (distractors.size < 3) {
         const offset = (random(-5, 5) + Math.random()); // small random offset
-        const value = formatDecimal(Number(correct) + offset, 2);
+        const value = fmt(Number(correct) + offset);
         if (value !== correct) distractors.add(value);
     }
 
     const options = shuffleArray([correct, ...Array.from(distractors)]);
 
+    const context = getContext(phaseIndex, questionIndex);
     const questionText = `Solve: ${a}x² + ${b}x + ${c} = 0. What is the smallest root?`;
+
     return {
         q: questionText,
         a: correct,
-        opcoes: options
+        opcoes: options,
+        context: context
     };
 }
 
