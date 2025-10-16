@@ -194,6 +194,80 @@ function checkAnswer(selectedIndex) {
     setTimeout(generateQuestion, CONFIG.TEMPO_ENTRE_QUESTOES);
 }
 
+/* Compatibility helpers: resolve different field names used by generators */
+function resolveQuestionField(question, ...names) {
+    if (!question) return null;
+    for (const n of names) {
+        if (Object.prototype.hasOwnProperty.call(question, n) && question[n] !== undefined) return question[n];
+    }
+    return null;
+}
+
+/* Render the currentQuestion to the screen (context, text, options).
+   Uses multiple possible property names returned by different generators. */
+function renderCurrentQuestion() {
+    const ctxEl = document.querySelector('.question-context');
+    const qEl = document.querySelector('.question-text');
+    const optionsGrid = document.querySelector('.options-grid');
+
+    if (!currentQuestion) {
+        if (ctxEl) ctxEl.textContent = '';
+        if (qEl) qEl.textContent = '';
+        if (optionsGrid) optionsGrid.innerHTML = '';
+        return;
+    }
+
+    const contextText = resolveQuestionField(currentQuestion, 'context', 'Context', 'questionContext');
+    const questionText = resolveQuestionField(currentQuestion, 'q', 'questionText', 'question', 'text') || '';
+    const optionsArr = resolveQuestionField(currentQuestion, 'opcoes', 'options', 'opts', 'choices') || [];
+    const correct = resolveQuestionField(currentQuestion, 'a', 'correctAnswer', 'correct', 'answer');
+
+    if (ctxEl) ctxEl.textContent = contextText || '';
+    if (qEl) qEl.textContent = questionText;
+
+    if (!optionsGrid) return;
+    optionsGrid.innerHTML = '';
+
+    // optionsArr may be array of numbers/strings. Ensure string display.
+    optionsArr.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-button';
+        btn.textContent = String(opt);
+        btn.type = 'button';
+        btn.addEventListener('click', () => {
+            // Prefer existing checkAnswer(selected, correct) if present
+            if (typeof checkAnswer === 'function') {
+                checkAnswer(String(opt), String(correct));
+                return;
+            }
+            // Fallbacks: call handleAnswer(index) or a generic handler if available
+            if (typeof handleAnswer === 'function') {
+                handleAnswer(idx);
+                return;
+            }
+            // If no handler exists, provide simple local feedback
+            const fb = document.getElementById('feedback-text') || document.querySelector('#feedback');
+            if (fb) {
+                if (String(opt) === String(correct)) {
+                    fb.textContent = 'Correct!';
+                    fb.classList.remove('feedback-wrong');
+                    fb.classList.add('feedback-correct');
+                } else {
+                    fb.textContent = 'Incorrect!';
+                    fb.classList.remove('feedback-correct');
+                    fb.classList.add('feedback-wrong');
+                }
+            }
+        });
+        optionsGrid.appendChild(btn);
+    });
+}
+
+// Ensure we render whenever currentQuestion is set by existing code.
+// If loadPhase or the code that sets currentQuestion doesn't call this,
+// search for places that assign to currentQuestion and add a call to renderCurrentQuestion() after assignment.
+// Example: at the end of loadPhase / showQuestion you can add: renderCurrentQuestion();
+
 // Exporta as funções para uso em outros arquivos
 window.loadPhase = loadPhase;
 window.generateQuestion = generateQuestion;
