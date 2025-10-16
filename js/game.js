@@ -36,16 +36,16 @@ function loadPhase(phaseNumber) {
             <h2 class="rpg-subtitle">${realmInfo.name}</h2>
             <div class="narrative-content">
                 <p>${realmInfo.description}</p>
-                <p>Prepare-se para enfrentar os desafios matemáticos deste reino!</p>
+                <p>Prepare yourself to face the mathematical challenges of this realm!</p>
             </div>
-            <button id="start-phase" class="rpg-button">Iniciar Desafios</button>
+            <button id="start-phase" class="rpg-button">Start Challenges</button>
         </div>
         
         <div class="game-container" style="display: none;">
             <div class="status-bar">
-                <span class="phase-display">Reino: ${phaseNumber}/${CONFIG.TOTAL_FASES}</span>
-                <span class="lives-display">Poções: </span>
-                <span class="score-display">Desafios: ${gameState.questionsAnswered}/${CONFIG.QUESTOES_POR_FASE}</span>
+                <span class="phase-display">Realm: ${phaseNumber}/${CONFIG.TOTAL_FASES}</span>
+                <span class="lives-display">Potions: </span>
+                <span class="score-display">Challenges: ${gameState.questionsAnswered}/${CONFIG.QUESTOES_POR_FASE}</span>
             </div>
             
             <div class="question-area">
@@ -54,7 +54,7 @@ function loadPhase(phaseNumber) {
             </div>
             
             <div class="options-grid">
-                <!-- Opções serão inseridas aqui -->
+                <!-- Options will be inserted here -->
             </div>
             
             <div class="feedback-area">
@@ -87,7 +87,7 @@ function loadPhase(phaseNumber) {
 function updateLivesDisplay() {
     const livesDisplay = document.querySelector('.lives-display');
     if (livesDisplay) {
-        let livesHTML = 'Poções: ';
+        let livesHTML = 'Potions: ';
         for (let i = 0; i < gameState.lives; i++) {
             livesHTML += '🧪';
         }

@@ -57,7 +57,7 @@ function initializeMap() {
 function updateMap() {
     // Verifica se o mapa foi inicializado
     if (!window.mapElements) {
-        console.error('O mapa não foi inicializado');
+        console.error('Map not initialized');
         return;
     }
     
@@ -79,16 +79,16 @@ function updateMap() {
         realm.classList.remove('completed', 'current', 'locked');
         
         if (i < gameState.currentPhase - 1) {
-            // Reino já completado
-            if (realmStatus) realmStatus.textContent = 'Completado';
+            // Realm already completed
+            if (realmStatus) realmStatus.textContent = 'Completed';
             realm.classList.add('completed');
         } else if (i === gameState.currentPhase - 1) {
-            // Reino atual
-            if (realmStatus) realmStatus.textContent = 'Atual';
+            // Current realm
+            if (realmStatus) realmStatus.textContent = 'Current';
             realm.classList.add('current');
         } else {
-            // Reino bloqueado
-            if (realmStatus) realmStatus.textContent = 'Bloqueado';
+            // Locked realm
+            if (realmStatus) realmStatus.textContent = 'Locked';
             realm.classList.add('locked');
         }
     }
@@ -97,9 +97,9 @@ function updateMap() {
     const { continueJourneyBtn } = window.mapElements;
     if (continueJourneyBtn) {
         if (gameState.currentPhase > gameState.totalPhases) {
-            continueJourneyBtn.textContent = 'Ver Resultado Final';
+            continueJourneyBtn.textContent = 'View Final Result';
         } else {
-            continueJourneyBtn.textContent = 'Continuar Jornada';
+            continueJourneyBtn.textContent = 'Continue Journey';
         }
     }
 }
@@ -157,8 +157,8 @@ function getCurrentRealmInfo() {
     
     // Fallback para reino desconhecido
     return {
-        name: 'Reino Desconhecido',
-        description: 'Um lugar misterioso além do mapa conhecido.'
+        name: 'Unknown Realm',
+        description: 'A mysterious place beyond the known map.'
     };
 }
 
