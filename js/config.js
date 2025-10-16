@@ -56,32 +56,32 @@ const CONFIG = {
 const REINOS = [
     {
         id: 1,
-        nome: "Floresta Encantada",
-        descricao: "Um lugar místico onde as árvores sussurram equações de 1º grau.",
+        nome: "Enchanted Forest",
+        descricao: "A mystical place where trees whisper linear equations.",
         tipo: "equacao1"
     },
     {
         id: 2,
-        nome: "Montanhas Nebulosas",
-        descricao: "Picos nebulosos onde as funções de 1º grau determinam caminhos seguros.",
+        nome: "Misty Mountains",
+        descricao: "Nebulous peaks where linear functions determine safe paths.",
         tipo: "funcao1"
     },
     {
         id: 3,
-        nome: "Cavernas Cristalinas",
-        descricao: "Cavernas brilhantes onde cristais mágicos formam equações de 2º grau.",
+        nome: "Crystal Caves",
+        descricao: "Glittering caves where crystals form quadratic equations.",
         tipo: "equacao2"
     },
     {
         id: 4,
-        nome: "Cidade Flutuante",
-        descricao: "Uma cidade nas nuvens onde as funções de 2º grau controlam as trajetórias voadoras.",
+        nome: "Floating City",
+        descricao: "A city in the clouds where quadratic functions control trajectories.",
         tipo: "funcao2"
     },
     {
         id: 5,
-        nome: "Castelo do Conhecimento",
-        descricao: "O lar do Grande Mago Algebrius, guardião de todos os tipos de conhecimento matemático.",
+        nome: "Castle of Knowledge",
+        descricao: "Home of the Great Mage Algebrius, guardian of all mathematical lore.",
         tipo: "misto"
     }
 ];
@@ -93,47 +93,47 @@ const REINOS = [
 const NARRATIVAS = {
     // Floresta Encantada - Equações de 1º grau
     1: [
-        "Ao adentrar a Floresta Encantada, você encontra uma árvore anciã que guarda o primeiro cristal. Ela sussurra um enigma matemático que você precisa resolver para prosseguir.",
-        "Um grupo de fadas guardiãs bloqueia seu caminho. Para provar seu valor, elas pedem que você resolva uma equação mágica que controla o crescimento das plantas.",
-        "Um riacho mágico corre pela floresta. Para atravessá-lo, você precisa calcular a quantidade exata de pedras para formar uma ponte segura.",
-        "Um druida protetor da floresta testa seus conhecimentos. Ele desenha símbolos místicos que formam uma equação que você precisa decifrar.",
-        "Diante do altar do cristal, uma última proteção mágica se revela. Resolva a equação inscrita no altar para liberar o primeiro Cristal do Conhecimento."
+        "As you enter the Enchanted Forest, an ancient tree guards the first crystal. It whispers a riddling equation you must solve to proceed.",
+        "A group of guardian sprites blocks your path. To prove your worth they ask you to solve a magical linear equation controlling the plants' growth.",
+        "A magical stream runs through the forest. To cross it you must calculate the exact number of stones to form a safe bridge.",
+        "A druid protector tests your knowledge. He draws mystic symbols that form an equation you must decode.",
+        "Before the crystal altar, a final protective sigil appears. Solve the inscribed equation to release the first Crystal of Knowledge."
     ],
     
     // Montanhas Nebulosas - Funções de 1º grau
     2: [
-        "Nas Montanhas Nebulosas, um velho cartógrafo explica que para encontrar o caminho seguro, você precisa entender como a altitude varia em função da distância.",
-        "Uma ponte suspensa balança perigosamente sobre um abismo. Para atravessá-la com segurança, você precisa calcular o ângulo de inclinação em cada ponto.",
-        "Um grupo de anões mineiros precisa de ajuda para calcular a profundidade de um novo túnel. Eles mostram um gráfico que você precisa interpretar.",
-        "Uma águia gigante oferece ajuda para sobrevoar um trecho perigoso, mas você precisa calcular a trajetória ideal para que ela não se canse.",
-        "No pico mais alto, onde o segundo cristal está guardado, você encontra um puzzle que relaciona a temperatura com a altitude. Resolva-o para obter o cristal."
+        "In the Misty Mountains, an old cartographer explains that to find a safe path you must understand how altitude changes with distance.",
+        "A swaying suspension bridge hangs over an abyss. To cross safely you need to calculate the slope at key points.",
+        "A band of dwarf miners needs help computing the depth of a new tunnel. They show a graph that you must interpret.",
+        "A giant eagle offers to carry you across a dangerous stretch, but you must calculate the optimal trajectory so it won't tire.",
+        "At the highest peak, where the second crystal rests, you face a puzzle linking temperature and altitude. Solve it to claim the crystal."
     ],
     
     // Cavernas Cristalinas - Equações de 2º grau
     3: [
-        "Nas Cavernas Cristalinas, cristais brilhantes formam padrões matemáticos. Um guardião de cristal pede que você resolva uma equação para harmonizar as energias.",
-        "Um lago subterrâneo reflete formas geométricas perfeitas. Para atravessá-lo, você precisa calcular as raízes de uma equação que controla o nível da água.",
-        "Estalactites e estalagmites crescem seguindo padrões matemáticos precisos. Descubra a equação que determina onde elas se encontrarão.",
-        "Um antigo mecanismo de pedra bloqueia seu caminho. As engrenagens seguem uma relação quadrática que você precisa decifrar para ativá-lo.",
-        "A câmara do terceiro cristal é protegida por um campo de força parabólico. Encontre os pontos fracos resolvendo a equação que o descreve."
+        "In the Crystal Caves, shining crystals form mathematical patterns. A crystal guardian asks you to solve an equation to harmonize the energies.",
+        "An underground lake reflects perfect geometric forms. To cross it you must compute the roots of an equation that controls the water level.",
+        "Stalactites and stalagmites grow following precise patterns. Discover the equation that determines where they meet.",
+        "An ancient stone mechanism blocks your way. The gears follow a quadratic relation that you must decipher to activate it.",
+        "The chamber of the third crystal is guarded by a parabolic force field. Find its weak points by solving the equation that describes it."
     ],
     
     // Cidade Flutuante - Funções de 2º grau
     4: [
-        "Na Cidade Flutuante, plataformas se movem em trajetórias parabólicas. Um sábio local pede que você calcule o ponto mais alto de uma delas para prosseguir.",
-        "Pontes de luz conectam os edifícios flutuantes. Para ativar uma delas, você precisa determinar a função que descreve seu arco perfeito.",
-        "Um inventor excêntrico criou um sistema de transporte que lança pequenas cápsulas entre torres. Ajude-o a calcular a trajetória ideal para uma entrega importante.",
-        "O sistema de sustentação da cidade depende de cristais de energia posicionados em pontos específicos. Determine onde colocar um cristal substituto usando funções quadráticas.",
-        "O quarto Cristal do Conhecimento está no centro da praça principal, protegido por um enigma que relaciona a altura das fontes de água com suas distâncias."
+        "In the Floating City, platforms move along parabolic paths. A local sage asks you to compute the highest point of one to proceed.",
+        "Light bridges connect floating buildings. To activate one you must determine the function that describes its perfect arc.",
+        "An eccentric inventor designed a transport system that launches capsules between towers. Help him calculate the ideal trajectory for a crucial delivery.",
+        "The city's levitation depends on energy crystals placed at specific points. Determine where to place a replacement crystal using quadratic functions.",
+        "The fourth Crystal of Knowledge sits in the central plaza, protected by a riddle linking fountain heights and distances."
     ],
     
     // Castelo do Conhecimento - Mistura de todos os tipos
     5: [
-        "No Castelo do Conhecimento, o Grande Mago Algebrius o recebe com um desafio que combina equações lineares e quadráticas em um único sistema.",
-        "A biblioteca mágica do castelo tem estantes que se movem seguindo padrões matemáticos complexos. Desvende a lógica para encontrar o livro que procura.",
-        "Na sala de artefatos, um espelho mágico mostra reflexos distorcidos por funções matemáticas. Determine a função correta para ver a imagem verdadeira.",
-        "A torre do relógio do castelo marca o tempo através de complexas relações matemáticas. Resolva o enigma para sincronizar os ponteiros corretamente.",
-        "Diante do altar do quinto e último Cristal do Conhecimento, o Grande Mago Algebrius apresenta seu desafio final, combinando todos os conhecimentos que você adquiriu."
+        "In the Castle of Knowledge, the Great Mage Algebrius greets you with a challenge that blends linear and quadratic equations into a single puzzle.",
+        "The castle's magical library has moving shelves that follow complex mathematical patterns. Uncover the logic to find the book you seek.",
+        "In the artifacts hall, a magic mirror shows distorted reflections via mathematical functions. Determine the correct function to reveal the true image.",
+        "The castle clocktower marks time through intricate mathematical relations. Solve the riddle to synchronize the hands correctly.",
+        "Before the altar of the final Crystal of Knowledge, the Great Mage presents his ultimate challenge, combining everything you've learned."
     ]
 };
 
@@ -144,79 +144,79 @@ const NARRATIVAS = {
 const TEXTOS = {
     // Tela de introdução
     INTRODUCAO: {
-        TITULO: "O Início da Aventura",
+        TITULO: "The Beginning of the Journey",
         CONTEUDO: [
-            "Em um mundo onde números e equações controlam a magia, você é um jovem aprendiz de mago com um talento especial para matemática.",
-            "O Grande Mago Algebrius convocou você para uma missão importante: recuperar os 5 Cristais do Conhecimento que foram roubados e escondidos em 5 reinos diferentes.",
-            "Cada cristal está protegido por enigmas matemáticos que apenas um verdadeiro mestre pode resolver.",
-            "Sua jornada começa na Floresta Encantada, onde o primeiro cristal aguarda..."
+            "In a world where numbers and equations shape magic, you are a young apprentice with a special talent for mathematics.",
+            "The Great Mage Algebrius summoned you for an important mission: recover the 5 Crystals of Knowledge that were stolen and hidden across five different realms.",
+            "Each crystal is protected by mathematical riddles that only a true master can solve.",
+            "Your journey begins in the Enchanted Forest, where the first crystal awaits..."
         ],
-        BOTAO: "Começar Jornada"
+        BOTAO: "Begin Journey"
     },
     
     // Tela de como jogar
     COMO_JOGAR: {
-        TITULO: "Como Jogar",
+        TITULO: "How to Play",
         CONTEUDO: [
-            "Bem-vindo à Jornada Matemática, aventureiro!",
-            "Neste mundo mágico, você usará seus conhecimentos matemáticos para superar desafios e atravessar 5 reinos diferentes.",
-            "Regras:",
-            "• Você começa com 3 poções de vida",
-            "• Cada resposta incorreta consome uma poção",
-            "• Acerte 5 desafios para avançar ao próximo reino",
-            "• Complete todos os 5 reinos para se tornar o Mestre da Matemática",
-            "Reinos:",
-            "• Floresta Encantada: Equações de 1º grau",
-            "• Montanhas Nebulosas: Funções de 1º grau",
-            "• Cavernas Cristalinas: Equações de 2º grau",
-            "• Cidade Flutuante: Funções de 2º grau",
-            "• Castelo do Conhecimento: Desafios mistos"
+            "Welcome to the Mathematical Journey, adventurer!",
+            "In this magical world you'll use your math skills to overcome challenges and traverse five distinct realms.",
+            "Rules:",
+            "• You start with 3 life potions",
+            "• Each wrong answer consumes one potion",
+            "• Get 5 correct challenges to advance to the next realm",
+            "• Complete all 5 realms to become the Master of Mathematics",
+            "Realms:",
+            "• Enchanted Forest: Linear equations",
+            "• Misty Mountains: Linear functions",
+            "• Crystal Caves: Quadratic equations",
+            "• Floating City: Quadratic functions",
+            "• Castle of Knowledge: Mixed challenges"
         ],
-        BOTAO: "Voltar ao Menu"
+        BOTAO: "Back to Menu"
     },
     
     // Tela de créditos
     CREDITOS: {
-        TITULO: "Créditos",
+        TITULO: "Credits",
         CONTEUDO: [
-            "A Jornada Matemática",
-            "Um jogo educativo que combina matemática e aventura",
-            "Desenvolvido: Tulio e Jose Levi",
-            "Beta Testers: Ximenes e Francisco Fernandes",
-            "Versão: 2.5",
+            "The Mathematical Journey",
+            "An educational game combining math and adventure",
+            "Developed: Tulio and Jose Levi",
+            "Beta Testers: Ximenes and Francisco Fernandes",
+            "Version: 2.5",
         ],
-        BOTAO: "Voltar ao Menu"
+        BOTAO: "Back to Menu"
     },
     
     // Tela de game over
     GAME_OVER: {
-        TITULO: "Sua Jornada Terminou...",
+        TITULO: "Your Journey Has Ended...",
         CONTEUDO: [
-            "Infelizmente suas poções acabaram e você não conseguiu completar sua missão.",
-            "Mas não desista! Todo grande mago falha antes de alcançar a maestria.",
-            "Deseja tentar novamente?"
+            "Unfortunately your potions are gone and you couldn't complete your mission.",
+            "But don't give up! Every great mage fails before achieving mastery.",
+            "Would you like to try again?"
         ],
-        BOTAO_TENTAR: "Tentar Novamente",
-        BOTAO_MENU: "Voltar ao Menu"
+        BOTAO_TENTAR: "Try Again",
+        BOTAO_MENU: "Back to Menu"
     },
     
     // Tela de vitória
     VITORIA: {
-        TITULO: "Vitória!",
+        TITULO: "Victory!",
         CONTEUDO: [
-            "Parabéns, grande mago! Você recuperou todos os 5 Cristais do Conhecimento!",
-            "Sua maestria em matemática impressionou até mesmo o Grande Mago Algebrius.",
-            "Os reinos agora estão seguros graças ao seu conhecimento e coragem.",
-            "Sua lenda será contada por gerações!"
+            "Congratulations, great mage! You recovered all 5 Crystals of Knowledge!",
+            "Your mastery of mathematics impressed even the Great Mage Algebrius.",
+            "The realms are now safe thanks to your wisdom and courage.",
+            "Your legend will be told for generations!"
         ],
-        BOTAO_JOGAR: "Jogar Novamente",
-        BOTAO_MENU: "Voltar ao Menu"
+        BOTAO_JOGAR: "Play Again",
+        BOTAO_MENU: "Back to Menu"
     },
     
     // Feedback para respostas
     FEEDBACK: {
-        CORRETO: "Correto! A magia flui através de você! ✨",
-        INCORRETO: "Incorreto! Você perdeu uma poção mágica! 💔"
+        CORRETO: "Correct! Magic flows through you! ✨",
+        INCORRETO: "Incorrect! You lost a magic potion! 💔"
     }
 };
 

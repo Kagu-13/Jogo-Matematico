@@ -197,6 +197,21 @@ function createNewGameState() {
     };
 }
 
+/**
+ * Formata um número para exibição, com um número fixo de casas decimais
+ * 
+ * @param {number} num - O número a ser formatado
+ * @param {number} decimals - O número de casas decimais (padrão: 2)
+ * @return {string} O número formatado como uma string
+ */
+function formatDecimal(num, decimals = 2) {
+    // Returns a string using a dot as decimal separator. Keeps integers without trailing .00.
+    const n = Number(num);
+    if (!isFinite(n)) return String(num);
+    if (Number.isInteger(n)) return String(n);
+    return n.toFixed(decimals); // toFixed uses dot (e.g. "28.26")
+}
+
 // Exporta as funções para uso em outros arquivos
 window.utils = {
     random,
@@ -209,5 +224,6 @@ window.utils = {
     fadeOut,
     saveGameState,
     loadGameState,
-    createNewGameState
+    createNewGameState,
+    formatDecimal
 };

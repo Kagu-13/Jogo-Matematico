@@ -105,55 +105,40 @@ function generateFunc1WithContext(phaseIndex, questionIndex) {
  * @return {Object} Objeto com a questão, contexto, opções e resposta correta
  */
 function generateEq2WithContext(phaseIndex, questionIndex) {
-    // Gera a equação matemática com raízes inteiras
-    const difficulty = CONFIG.DIFICULDADE.MEDIA;
-    let x1 = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
-    let x2 = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
-    
-    // Garante raízes diferentes
-    while (x1 === x2) {
-        x2 = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
-    }
-    
-    // Calcula os coeficientes a partir das raízes
-    const a = utils.random(1, 3) * (Math.random() < 0.5 ? -1 : 1);
-    const b = -a * (x1 + x2);
-    const c = a * x1 * x2;
-    
-    // Obtém o contexto narrativo para esta questão
-    const context = NARRATIVAS[phaseIndex][questionIndex % NARRATIVAS[phaseIndex].length];
-    
-    // Cria o texto da questão
-    const questionText = `Quais são as raízes da equação ${a}x² + ${b}x + ${c} = 0?`;
-    
-    // Formata a resposta correta
-    const roots = [x1, x2].sort((a, b) => a - b);
-    const correctAnswerStr = `{${roots[0]}, ${roots[1]}}`;
-    
-    // Gera as opções de distração (pares de números)
+    // Generate coefficients ensuring real roots
+    let a, b, c, disc;
+    do {
+        a = random(1, 5);
+        b = random(-10, 10);
+        c = random(-10, 10);
+        disc = b * b - 4 * a * c;
+    } while (disc < 0);
+
+    const sqrt = Math.sqrt(disc);
+    let x1 = (-b - sqrt) / (2 * a);
+    let x2 = (-b + sqrt) / (2 * a);
+
+    // Avoid identical roots (very unlikely after above, but safe)
+    if (Math.abs(x1 - x2) < 1e-9) x2 += 1;
+
+    const smallest = Math.min(x1, x2);
+    const correct = formatDecimal(smallest, 2);
+
+    // Build distractors near the correct value, formatted with dot
     const distractors = new Set();
     while (distractors.size < 3) {
-        const d_x1 = x1 + utils.random(-2, 2);
-        const d_x2 = x2 + utils.random(-2, 2);
-        const distractor_roots = [d_x1, d_x2].sort((a, b) => a - b);
-        const distractor_str = `{${distractor_roots[0]}, ${distractor_roots[1]}}`;
-        if (distractor_str !== correctAnswerStr) {
-            distractors.add(distractor_str);
-        }
+        const offset = (random(-5, 5) + Math.random()); // small random offset
+        const value = formatDecimal(Number(correct) + offset, 2);
+        if (value !== correct) distractors.add(value);
     }
-    
-    // Prepara as opções e identifica a resposta correta
-    const options = Array.from(distractors);
-    options.push(correctAnswerStr);
-    utils.shuffleArray(options);
-    const correctAnswerIndex = options.indexOf(correctAnswerStr);
-    
-    // Retorna o objeto completo da questão
+
+    const options = shuffleArray([correct, ...Array.from(distractors)]);
+
+    const questionText = `Solve: ${a}x² + ${b}x + ${c} = 0. What is the smallest root?`;
     return {
-        context: context,
-        questionText: questionText,
-        options: options,
-        correctAnswerIndex: correctAnswerIndex
+        q: questionText,
+        a: correct,
+        opcoes: options
     };
 }
 
