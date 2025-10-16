@@ -10,74 +10,40 @@
 // === GERADORES DE QUESTÕES POR TIPO ===
 
 /**
- * Returns an English context sentence for a question using NARRATIVAS (config.js)
- * Falls back to simple templates if NARRATIVAS is not available.
- */
-function getContext(phaseIndex, questionIndex) {
-    if (typeof NARRATIVAS !== 'undefined' && NARRATIVAS[phaseIndex]) {
-        const arr = NARRATIVAS[phaseIndex];
-        return arr[questionIndex % arr.length] || arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    // fallback contexts (English)
-    const FALLBACK = {
-        1: [
-            "An ancient tree whispers a linear riddle you must solve.",
-            "Sprites demand you solve a simple equation to pass."
-        ],
-        2: [
-            "A bridge keeper asks you to interpret a linear function.",
-            "A cartographer shows a straight-line relation to decode."
-        ],
-        3: [
-            "Crystals hum a quadratic pattern; find its roots.",
-            "An underground guardian presents a quadratic challenge."
-        ],
-        4: [
-            "Platforms follow parabolic arcs; compute the peak.",
-            "An inventor needs the vertex of a parabola calculated."
-        ],
-        5: [
-            "The Great Mage mixes puzzles from all realms. Prove your mastery.",
-            "A final blended challenge awaits at the altar."
-        ]
-    };
-
-    const arr = FALLBACK[phaseIndex] || ["A mysterious mathematical challenge appears."];
-    return arr[questionIndex % arr.length];
-}
-
-/**
- * Gera uma questão de equação de 1º grau com contexto narrativo (EN)
- * Formato: ax + b = c  (constructed so solution is integer or nicely formatted)
+ * Gera uma questão de equação de 1º grau com contexto narrativo
+ * Formato: ax + b = c
+ * 
+ * @param {number} phaseIndex - Índice da fase atual (1-5)
+ * @param {number} questionIndex - Índice da questão na fase atual
+ * @return {Object} Objeto com a questão, contexto, opções e resposta correta
  */
 function generateEq1WithContext(phaseIndex, questionIndex) {
-    // choose integer solution first, then build equation
-    const x = random(-10, 10);
-    const a = random(1, 10);
-    const b = random(-15, 15);
+    // Gera a equação matemática com dificuldade apropriada
+    const difficulty = CONFIG.DIFICULDADE.FACIL;
+    const a = utils.random(1, 10);
+    const b = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
+    const x = utils.random(difficulty.MIN_NUMERO, difficulty.MAX_NUMERO);
     const c = a * x + b;
-
-    const context = getContext(phaseIndex, questionIndex);
-
-    const correct = String(x);
-
-    // distractors (nearby values), ensure uniqueness and string form
-    const distractors = new Set();
-    while (distractors.size < 3) {
-        const delta = random(-4, 4);
-        const val = x + delta;
-        if (String(val) !== correct) distractors.add(String(val));
-    }
-
-    const options = shuffleArray([correct, ...Array.from(distractors)]);
-
-    const questionText = `Solve for x: ${a}x + ${b} = ${c}`;
+    
+    // Obtém o contexto narrativo para esta questão
+    const context = NARRATIVAS[phaseIndex][questionIndex % NARRATIVAS[phaseIndex].length];
+    
+    // Cria o texto da questão
+    const questionText = `Resolva a equação: ${a}x + ${b} = ${c}`;
+    
+    // Gera as opções e identifica a resposta correta
+    const correctAnswer = x;
+    const options = utils.generateDistractors(correctAnswer, 3, difficulty.VARIACAO_DISTRATORES);
+    options.push(correctAnswer);
+    utils.shuffleArray(options);
+    const correctAnswerIndex = options.indexOf(correctAnswer);
+    
+    // Retorna o objeto completo da questão
     return {
-        q: questionText,
-        a: correct,
-        opcoes: options,
-        context: context
+        context: context,
+        questionText: questionText,
+        options: options.map(String),
+        correctAnswerIndex: correctAnswerIndex
     };
 }
 
@@ -104,14 +70,14 @@ function generateFunc1WithContext(phaseIndex, questionIndex) {
     let questionText, correctAnswer;
     if (Math.random() < 0.5) {
         // Pergunta o valor de f(x) para um x dado
-        questionText = `Given the function f(x) = ${a}x + ${b}, what is the value of f(${x_val})?`;
+        questionText = `Dada a função f(x) = ${a}x + ${b}, qual o valor de f(${x_val})?`;
         correctAnswer = fx_val;
     } else {
         // Pergunta o valor de x para um f(x) dado
         // Garante que a seja diferente de 0 para poder isolar x
         const a_safe = a === 0 ? (Math.random() < 0.5 ? -1 : 1) : a;
         const fx_val_safe = a_safe * x_val + b;
-        questionText = `Given the function f(x) = ${a_safe}x + ${b}, for which value of x do we have f(x) = ${fx_val_safe}?`;
+        questionText = `Dada a função f(x) = ${a_safe}x + ${b}, para qual valor de x temos f(x) = ${fx_val_safe}?`;
         correctAnswer = x_val;
     }
     
@@ -131,8 +97,12 @@ function generateFunc1WithContext(phaseIndex, questionIndex) {
 }
 
 /**
- * Gera uma questão de equação de 2º grau com contexto narrativo (EN)
- * Retorna as opções e a resposta formatadas com point decimal se necessário
+ * Gera uma questão de equação de 2º grau com contexto narrativo
+ * Formato: ax² + bx + c = 0
+ * 
+ * @param {number} phaseIndex - Índice da fase atual (1-5)
+ * @param {number} questionIndex - Índice da questão na fase atual
+ * @return {Object} Objeto com a questão, contexto, opções e resposta correta
  */
 function generateEq2WithContext(phaseIndex, questionIndex) {
     // Generate coefficients ensuring real roots
@@ -152,36 +122,23 @@ function generateEq2WithContext(phaseIndex, questionIndex) {
     if (Math.abs(x1 - x2) < 1e-9) x2 += 1;
 
     const smallest = Math.min(x1, x2);
-
-    // format decimal with utils.formatDecimal if available, otherwise use toFixed
-    const fmt = (num) => {
-        if (typeof utils !== 'undefined' && typeof utils.formatDecimal === 'function') {
-            return utils.formatDecimal(num, 2);
-        }
-        if (Number.isInteger(num)) return String(num);
-        return num.toFixed(2);
-    };
-
-    const correct = fmt(smallest);
+    const correct = formatDecimal(smallest, 2);
 
     // Build distractors near the correct value, formatted with dot
     const distractors = new Set();
     while (distractors.size < 3) {
         const offset = (random(-5, 5) + Math.random()); // small random offset
-        const value = fmt(Number(correct) + offset);
+        const value = formatDecimal(Number(correct) + offset, 2);
         if (value !== correct) distractors.add(value);
     }
 
     const options = shuffleArray([correct, ...Array.from(distractors)]);
 
-    const context = getContext(phaseIndex, questionIndex);
     const questionText = `Solve: ${a}x² + ${b}x + ${c} = 0. What is the smallest root?`;
-
     return {
         q: questionText,
         a: correct,
-        opcoes: options,
-        context: context
+        opcoes: options
     };
 }
 
@@ -214,7 +171,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         // Pergunta o valor de f(x) para um x dado
         const x_val = utils.random(-3, 3);
         const fx_val = a * (x_val**2) + b * x_val + c;
-        questionText = `Given the function f(x) = ${a}x² + ${b}x + ${c}, what is the value of f(${x_val})?`;
+        questionText = `Dada a função f(x) = ${a}x² + ${b}x + ${c}, qual o valor de f(${x_val})?`;
         correctAnswer = fx_val;
         options = utils.generateDistractors(correctAnswer, 3, difficulty.VARIACAO_DISTRATORES);
         options.push(correctAnswer);
@@ -233,7 +190,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         // Ajusta b para ter divisão exata
         const adjusted_b = utils.random(-3, 3) * (2 * a);
         const xv = -adjusted_b / (2 * a);
-        questionText = `What is the x-coordinate of the vertex of the parabola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
+        questionText = `Qual a coordenada x do vértice da parábola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
         correctAnswer = xv;
         options = utils.generateDistractors(correctAnswer, 3, 3);
         options.push(correctAnswer);
@@ -253,7 +210,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         const adjusted_b = utils.random(-3, 3) * (2 * a);
         const xv = -adjusted_b / (2 * a);
         const yv = a * (xv**2) + adjusted_b * xv + c;
-        questionText = `What is the y-coordinate of the vertex of the parabola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
+        questionText = `Qual a coordenada y do vértice da parábola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
         correctAnswer = yv;
         options = utils.generateDistractors(correctAnswer, 3, difficulty.VARIACAO_DISTRATORES);
         options.push(correctAnswer);
@@ -280,7 +237,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         const b = -a * (x1 + x2);
         const c = a * x1 * x2;
         
-        questionText = `What are the zeros (roots) of the function f(x) = ${a}x² + ${b}x + ${c}?`;
+        questionText = `Quais são os zeros (raízes) da função f(x) = ${a}x² + ${b}x + ${c}?`;
         
         const roots = [x1, x2].sort((a, b) => a - b);
         const correctAnswerStr = `{${roots[0]}, ${roots[1]}}`;
