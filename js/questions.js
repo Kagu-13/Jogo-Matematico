@@ -104,14 +104,14 @@ function generateFunc1WithContext(phaseIndex, questionIndex) {
     let questionText, correctAnswer;
     if (Math.random() < 0.5) {
         // Pergunta o valor de f(x) para um x dado
-        questionText = `Dada a função f(x) = ${a}x + ${b}, qual o valor de f(${x_val})?`;
+        questionText = `Given the function f(x) = ${a}x + ${b}, what is the value of f(${x_val})?`;
         correctAnswer = fx_val;
     } else {
         // Pergunta o valor de x para um f(x) dado
         // Garante que a seja diferente de 0 para poder isolar x
         const a_safe = a === 0 ? (Math.random() < 0.5 ? -1 : 1) : a;
         const fx_val_safe = a_safe * x_val + b;
-        questionText = `Dada a função f(x) = ${a_safe}x + ${b}, para qual valor de x temos f(x) = ${fx_val_safe}?`;
+        questionText = `Given the function f(x) = ${a_safe}x + ${b}, for which value of x do we have f(x) = ${fx_val_safe}?`;
         correctAnswer = x_val;
     }
     
@@ -214,7 +214,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         // Pergunta o valor de f(x) para um x dado
         const x_val = utils.random(-3, 3);
         const fx_val = a * (x_val**2) + b * x_val + c;
-        questionText = `Dada a função f(x) = ${a}x² + ${b}x + ${c}, qual o valor de f(${x_val})?`;
+        questionText = `Given the function f(x) = ${a}x² + ${b}x + ${c}, what is the value of f(${x_val})?`;
         correctAnswer = fx_val;
         options = utils.generateDistractors(correctAnswer, 3, difficulty.VARIACAO_DISTRATORES);
         options.push(correctAnswer);
@@ -233,7 +233,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         // Ajusta b para ter divisão exata
         const adjusted_b = utils.random(-3, 3) * (2 * a);
         const xv = -adjusted_b / (2 * a);
-        questionText = `Qual a coordenada x do vértice da parábola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
+        questionText = `What is the x-coordinate of the vertex of the parabola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
         correctAnswer = xv;
         options = utils.generateDistractors(correctAnswer, 3, 3);
         options.push(correctAnswer);
@@ -253,7 +253,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         const adjusted_b = utils.random(-3, 3) * (2 * a);
         const xv = -adjusted_b / (2 * a);
         const yv = a * (xv**2) + adjusted_b * xv + c;
-        questionText = `Qual a coordenada y do vértice da parábola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
+        questionText = `What is the y-coordinate of the vertex of the parabola f(x) = ${a}x² + ${adjusted_b}x + ${c}?`;
         correctAnswer = yv;
         options = utils.generateDistractors(correctAnswer, 3, difficulty.VARIACAO_DISTRATORES);
         options.push(correctAnswer);
@@ -280,7 +280,7 @@ function generateFunc2WithContext(phaseIndex, questionIndex) {
         const b = -a * (x1 + x2);
         const c = a * x1 * x2;
         
-        questionText = `Quais são os zeros (raízes) da função f(x) = ${a}x² + ${b}x + ${c}?`;
+        questionText = `What are the zeros (roots) of the function f(x) = ${a}x² + ${b}x + ${c}?`;
         
         const roots = [x1, x2].sort((a, b) => a - b);
         const correctAnswerStr = `{${roots[0]}, ${roots[1]}}`;
